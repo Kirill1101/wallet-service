@@ -49,7 +49,7 @@ public class AuditState implements ConsoleState {
                 return;
             }
         } while (InputValidate.isEmpty(input) || !InputValidate.isInt(input)
-                || !InputValidate.isCorrectNumberInList(1, users.size(), Integer.parseInt(input)));
+                || !InputValidate.isCorrectNumberInMenu(1, users.size(), Integer.parseInt(input)));
 
         int number = Integer.parseInt(input);
         for (String action : userService.getAllActions(users.get(number - 1))) {

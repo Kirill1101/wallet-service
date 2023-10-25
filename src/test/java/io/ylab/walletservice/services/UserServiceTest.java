@@ -1,6 +1,5 @@
 package io.ylab.walletservice.services;
 
-import io.ylab.walletservice.infrastucuture.factory.UserIdFactory;
 import io.ylab.walletservice.infrastucuture.factory.UserServiceFactory;
 import io.ylab.walletservice.model.User;
 import org.junit.Assert;

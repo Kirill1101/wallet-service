@@ -1,7 +1,6 @@
 package io.ylab.walletservice.infrastucuture.in.state.Wallet;
 
 import io.ylab.walletservice.infrastucuture.factory.UserServiceFactory;
-import io.ylab.walletservice.infrastucuture.factory.WalletIdFactory;
 import io.ylab.walletservice.infrastucuture.factory.WalletServiceFactory;
 import io.ylab.walletservice.infrastucuture.in.ConsoleManager;
 import io.ylab.walletservice.infrastucuture.in.InputValidate;
@@ -39,11 +38,9 @@ public class WalletState implements ConsoleState {
     public void process() throws Exception {
         // Проверяю, создан ли кошелек у данного пользователя.
         if (walletService.getWalletByLogin(user.getLogin()) == null) {
-            wallet = new Wallet(WalletIdFactory.getNewWalletId(), user, 0, new ArrayList<Transaction>());
-            walletService.createWallet(wallet);
-        } else {
-            wallet = walletService.getWalletByLogin(user.getLogin());
+            walletService.createWallet(user.getLogin());
         }
+        wallet = walletService.getWalletByLogin(user.getLogin());
 
         ConsoleManager.separator();
         System.out.println("Пользователь: " + user.getLogin());

@@ -7,7 +7,7 @@ import io.ylab.walletservice.infrastucuture.in.state.Admin.AdminMenuState;
 import io.ylab.walletservice.infrastucuture.in.state.ConsoleState;
 import io.ylab.walletservice.infrastucuture.in.state.StartState;
 import io.ylab.walletservice.infrastucuture.in.state.Wallet.WalletState;
-import io.ylab.walletservice.model.Admin;
+import io.ylab.walletservice.model.Role;
 import io.ylab.walletservice.model.User;
 import io.ylab.walletservice.services.UserService;
 
@@ -56,7 +56,7 @@ public class LoginState implements ConsoleState {
                 return;
             }
         } while (InputValidate.isEmpty(password) || !InputValidate.isCorrectPassword(user.getPassword(), password));
-        if (user instanceof Admin) {
+        if (user.getRole() == Role.Admin) {
             nextState = new AdminMenuState();
         } else {
             nextState = new WalletState(user);

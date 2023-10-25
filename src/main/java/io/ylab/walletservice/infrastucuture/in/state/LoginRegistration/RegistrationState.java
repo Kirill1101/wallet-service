@@ -1,12 +1,12 @@
 package io.ylab.walletservice.infrastucuture.in.state.LoginRegistration;
 
-import io.ylab.walletservice.infrastucuture.factory.UserIdFactory;
 import io.ylab.walletservice.infrastucuture.factory.UserServiceFactory;
 import io.ylab.walletservice.infrastucuture.in.ConsoleManager;
 import io.ylab.walletservice.infrastucuture.in.InputValidate;
 import io.ylab.walletservice.infrastucuture.in.state.ConsoleState;
 import io.ylab.walletservice.infrastucuture.in.state.StartState;
 import io.ylab.walletservice.infrastucuture.in.state.Wallet.WalletState;
+import io.ylab.walletservice.model.Role;
 import io.ylab.walletservice.model.User;
 import io.ylab.walletservice.services.UserService;
 
@@ -62,8 +62,8 @@ public class RegistrationState implements ConsoleState {
                 return;
             }
             if (!password.isEmpty()) {
-                user = new User(UserIdFactory.getNewUserId(), login, password, new ArrayList<String>());
-                userService.createUser(user);
+                userService.createUser(login, password, Role.User);
+                user = userService.getUserByLogin(login);
                 nextState = new WalletState(user);
                 userService.createAction(user, "Пользователь зарегестрировался");
             }

@@ -6,15 +6,11 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-/**
- * Кошелек.
- */
 @Getter
 @AllArgsConstructor
 public class Wallet {
     private final int id;
-    private final User user;
+    private final String userLogin;
     @Setter
     private int balance;
-    private ArrayList<Transaction> transactions;
 }

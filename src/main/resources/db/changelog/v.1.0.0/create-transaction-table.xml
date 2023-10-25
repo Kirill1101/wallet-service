@@ -1,0 +1,34 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+    <changeSet id="create-transaction-table" author="kirill">
+        <createTable tableName="transaction" schemaName="wallet">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(255)"/>
+            <column name="date" type="VARCHAR(255)"/>
+            <column name="balance_before" type="INT"/>
+            <column name="balance_change" type="INT"/>
+            <column name="balance_after" type="INT"/>
+            <column name="wallet_id" type="BIGINT">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableSchemaName="wallet"
+                                 baseTableName="transaction"
+                                 baseColumnNames="login"
+                                 constraintName="fk_login"
+                                 referencedTableSchemaName="wallet"
+                                 referencedTableName="user"
+                                 referencedColumnNames="login"/>
+        <addForeignKeyConstraint baseTableSchemaName="wallet"
+                                 baseTableName="transaction"
+                                 baseColumnNames="wallet_id"
+                                 constraintName="fk_wallet_id"
+                                 referencedTableSchemaName="wallet"
+                                 referencedTableName="wallet"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

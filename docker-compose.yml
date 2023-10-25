@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+
+  db_wallet:
+    container_name: db_wallet
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: kirill
+      POSTGRES_PASSWORD: qwerty
+    ports:
+      - "5432:5432"

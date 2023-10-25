@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
-/**
- * Пользователь.
- */
 @Getter
 @AllArgsConstructor
 public class User {
@@ -15,4 +12,5 @@ public class User {
     private final String login;
     private String password;
     private List<String> actions;
+    private Role role;
 }

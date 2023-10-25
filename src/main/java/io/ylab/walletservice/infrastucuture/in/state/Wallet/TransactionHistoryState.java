@@ -5,6 +5,7 @@ import io.ylab.walletservice.infrastucuture.factory.UserServiceFactory;
 import io.ylab.walletservice.infrastucuture.factory.WalletServiceFactory;
 import io.ylab.walletservice.infrastucuture.in.state.ConsoleState;
 import io.ylab.walletservice.model.Transaction;
+import io.ylab.walletservice.model.User;
 import io.ylab.walletservice.model.Wallet;
 import io.ylab.walletservice.services.TransactionService;
 import io.ylab.walletservice.services.UserService;
@@ -20,20 +21,22 @@ public class TransactionHistoryState implements ConsoleState {
     private final TransactionService transactionService;
     private final UserService userService;
     private final Wallet wallet;
+    private final User user;
 
     public TransactionHistoryState(Wallet wallet) {
         this.wallet = wallet;
         this.walletService = WalletServiceFactory.getWalletService();
         this.transactionService = TransactionServiceFactory.getTransactionService();
         this.userService = UserServiceFactory.getUserService();
-        this.nextState = new WalletState(wallet.getUser());
+        this.user = userService.getUserByLogin(wallet.getUserLogin());
+        this.nextState = new WalletState(user);
     }
 
     @Override
     public void process() throws Exception {
-        userService.createAction(wallet.getUser(), "Пользователь просмотрел историю транзакций");
-        for (Transaction transaction : walletService.getAllTransactionFromUser(wallet)) {
-            System.out.println(transactionService.getInfoFromTransactionAsString(transaction));
+        userService.createAction(user, "Пользователь просмотрел историю транзакций");
+        for (Transaction transaction : walletService.getTransactionsByWalletId(wallet.getId())) {
+            System.out.println(transaction);
         }
     }
 

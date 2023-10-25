@@ -8,12 +8,13 @@ import io.ylab.walletservice.infrastucuture.in.InputValidate;
 import io.ylab.walletservice.infrastucuture.in.state.ConsoleState;
 import io.ylab.walletservice.infrastucuture.in.state.StartState;
 import io.ylab.walletservice.model.Transaction;
+import io.ylab.walletservice.model.User;
 import io.ylab.walletservice.model.Wallet;
 import io.ylab.walletservice.services.TransactionService;
 import io.ylab.walletservice.services.UserService;
 import io.ylab.walletservice.services.WalletService;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Класс, который реализует снятие денег со счета пользователя с помощью консоли.
@@ -25,13 +26,15 @@ public class DebitState implements ConsoleState {
     private final TransactionService transactionService;
     private final UserService userService;
     private final Wallet wallet;
+    private final User user;
 
     public DebitState(Wallet wallet) {
         this.wallet = wallet;
         this.walletService = WalletServiceFactory.getWalletService();
         this.transactionService = TransactionServiceFactory.getTransactionService();
         this.userService = UserServiceFactory.getUserService();
-        nextState = new WalletState(wallet.getUser());
+        this.user = userService.getUserByLogin(wallet.getUserLogin());
+        nextState = new WalletState(user);
     }
 
     @Override
@@ -43,7 +46,7 @@ public class DebitState implements ConsoleState {
             sum = ConsoleManager.readLine();
             if (sum.equals("exit")) {
                 nextState = new StartState();
-                userService.createAction(wallet.getUser(), "Пользователь вышел из аккаунта");
+                userService.createAction(user, "Пользователь вышел из аккаунта");
                 return;
             }
             if (sum.equals("back")) {
@@ -60,7 +63,7 @@ public class DebitState implements ConsoleState {
             id = ConsoleManager.readLine();
             if (id.equals("exit")) {
                 nextState = new StartState();
-                userService.createAction(wallet.getUser(), "Пользователь вышел из аккаунта");
+                userService.createAction(user, "Пользователь вышел из аккаунта");
                 return;
             }
             if (id.equals("back")) {
@@ -72,10 +75,11 @@ public class DebitState implements ConsoleState {
         } while (InputValidate.isEmpty(id) || !InputValidate.isInt(id)
                 || !InputValidate.isBiggerThanZero(Integer.parseInt(id))
                 || transactionService.getTransactionById(Integer.parseInt(id)) != null);
-        transactionService.createTransaction(new Transaction(Integer.parseInt(id), wallet.getUser().getLogin(),
-                new Date(), wallet.getBalance(), -Integer.parseInt(sum), wallet.getBalance() - Integer.parseInt(sum)));
+        transactionService.createTransaction(new Transaction(Integer.parseInt(id), user.getLogin(),
+                new Date(new java.util.Date().getTime()), wallet.getBalance(), -Integer.parseInt(sum),
+                wallet.getBalance() - Integer.parseInt(sum), wallet.getId()));
         walletService.takeMoneyFromBalance(wallet, Integer.parseInt(sum));
-        userService.createAction(wallet.getUser(), "Пользователь снял суммую равную "
+        userService.createAction(user, "Пользователь снял суммую равную "
                 + Integer.parseInt(sum) + " с баланса");
     }
 

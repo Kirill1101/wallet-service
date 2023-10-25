@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class InputValidateTest {
     @Test
     public void methodIsCorrectNumberInListShouldReturnCorrectValue() {
-        Assert.assertTrue(InputValidate.isCorrectNumberInList(1,1,1));
-        Assert.assertFalse(InputValidate.isCorrectNumberInList(1,5,6));
+        Assert.assertTrue(InputValidate.isCorrectNumberInMenu(1,1,1));
+        Assert.assertFalse(InputValidate.isCorrectNumberInMenu(1,5,6));
     }
 
     @Test
